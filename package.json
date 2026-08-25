@@ -1,0 +1,17 @@
+{
+  "name": "wasm-performance",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^7"
+  },
+  "scripts": {
+    "compile": "bun build --minify --outfile ./dist/bounce.js ./src/bounce.ts",
+    "compilego": "cd go; make -B",
+    "serve": "bunx serve ."
+  }
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Wasm AssemblyScript Canvas</title>
+    <style>
+        body {
+            background: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        canvas {
+            border: 2px solid #555;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="canvas" width="100" height="100"></canvas>
+    <script type="module">
+        import { updateAndRender, buffer } from './dist/bounce.js';
+        const width = 1000;
+        const height = 800;
+        const totalBytes = width * height * 4;
+        
+        const canvas = document.getElementById('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        const imageData = ctx.createImageData(width, height);
+
+        let lastTimestamp = performance.now();
+        const loop = () => {
+            const timestamp = performance.now();
+            //console.log("Time between: " + (timestamp - lastTimestamp) / 1000);
+            updateAndRender((timestamp - lastTimestamp) / 1000);
+            console.log("Render delay", performance.now() - timestamp, "ms");
+
+            imageData.data.set(buffer);
+            ctx.putImageData(imageData, 0, 0);
+            lastTimestamp = timestamp;
+            requestAnimationFrame(loop);
+        };
+        
+        loop();
+    </script>
+</body>
+
+</html>
