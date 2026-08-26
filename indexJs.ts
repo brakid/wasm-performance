@@ -1,6 +1,4 @@
-import { updateAndRender } from './dist/bounce.js';
-
-let lastTimestamp = Date.now();
+import { updateAndRender } from "./dist/bounce.js";
 
 const latencies = [];
 for (let i = 0; i < 100000; i++) {

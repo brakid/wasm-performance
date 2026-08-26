@@ -24,15 +24,17 @@ const importObject = {
     },
 };
 
-const wasmModule = await WebAssembly.instantiate(wasmBuffer, importObject);
+require("./wasm_exec");
+const go = new global.Go();
+
+const wasmModule = await WebAssembly.instantiate(wasmBuffer, { ...go.importObject, ...importObject });
 
 type Exports = {
   memory: WebAssembly.Memory;
-  _initialize: () => void,
   updateAndRender: (timeDelta: number) => void,
 };
 
-const { memory, _initialize, updateAndRender } = wasmModule.instance.exports as Exports;
+const { memory, updateAndRender } = wasmModule.instance.exports as Exports;
 
 const getInt32 = (pointer: number): number => {
     const dataView = new DataView(memory.buffer);
@@ -57,7 +59,7 @@ const setInt32 = (pointer: number, value: number) => {
     dataView.setInt32(pointer, value);
 };
 
-_initialize();
+go.run(wasmModule.instance);
 
 const latencies = [];
 for (let i = 0; i < 100000; i++) {
