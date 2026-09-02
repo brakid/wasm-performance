@@ -44,7 +44,7 @@
         const ctx = canvas.getContext('2d');
         const imageData = ctx.createImageData(width, height);
 
-       go.run(wasmModule.instance);
+        go.run(wasmModule.instance);
 
         const bufferPointer = getBufferPointer();
 
